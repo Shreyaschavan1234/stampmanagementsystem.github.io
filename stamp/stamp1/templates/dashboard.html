@@ -1,0 +1,204 @@
+{% extends 'layouts/app.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <h4>Today's quick view</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-statistic-2">
+                    <div class="card-icon shadow-primary bg-primary">
+                        <i class="fas fa-archive"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Available</h4>
+                        </div>
+                        <div class="card-body">
+                            {{ available_stamps }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card card-statistic-2">
+                    <div class="card-icon shadow-danger bg-danger">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Purchased</h4>
+                        </div>
+                        <div class="card-body">
+                            {{ today_purchases }} stamps
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card card-statistic-2">
+                    <div class="card-icon shadow-info bg-info">
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Sold</h4>
+                        </div>
+                        <div class="card-body">
+                            {{ today_sold }} stamps
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card card-statistic-2">
+                    <div class="card-icon shadow-warning bg-warning">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Purchased</h4>
+                        </div>
+                        <div class="card-body">
+                            ₹{{ today_purchases_amount }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card card-statistic-2">
+                    <div class="card-icon shadow-success bg-success">
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Commission</h4>
+                        </div>
+                        <div class="card-body">
+                            ₹{{ today_sold_amount }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h4>Analytics</h4>
+        <div class="card">
+            <div class="card-body">
+                <canvas id="analytic_chart" height="160"></canvas>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-statistic-2">
+                    <div class="card-icon shadow-primary bg-primary">
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Current Year Commission</h4>
+                        </div>
+                        <div class="card-body">
+                            ₹{{ current_year_sales }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-statistic-2">
+                    <div class="card-icon shadow-info bg-info">
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Paid Online (Overall)</h4>
+                        </div>
+                        <div class="card-body">
+                            ₹{{ online_amount }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-statistic-2">
+                    <div class="card-icon shadow-danger bg-danger">
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                    <div class="card-wrap">
+                        <div class="card-header">
+                            <h4>Paid Cash (Overall)</h4>
+                        </div>
+                        <div class="card-body">
+                            ₹{{ cash_amount }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    var ctx = document.getElementById("analytic_chart").getContext('2d');
+var myChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    datasets: [{
+      label: 'Commission',
+      data: [{{ sales }}],
+      borderWidth: 2,
+      backgroundColor: 'rgba(63,82,227,.8)',
+      borderWidth: 0,
+      borderColor: 'transparent',
+      pointBorderWidth: 0,
+      pointRadius: 3.5,
+      pointBackgroundColor: 'transparent',
+      pointHoverBackgroundColor: 'rgba(63,82,227,.8)',
+    },
+    /** {
+      label: 'Purchases',
+      data: [{{ purchases }}],
+      borderWidth: 2,
+      backgroundColor: 'rgba(254,86,83,.7)',
+      borderWidth: 0,
+      borderColor: 'transparent',
+      pointBorderWidth: 0 ,
+      pointRadius: 3.5,
+      pointBackgroundColor: 'transparent',
+      pointHoverBackgroundColor: 'rgba(254,86,83,.8)',
+    } **/
+    ]
+  },
+  options: {
+    legend: {
+      display: false
+    },
+    scales: {
+      yAxes: [{
+        gridLines: {
+          // display: false,
+          drawBorder: false,
+          color: '#f2f2f2',
+        },
+        ticks: {
+          beginAtZero: true,
+          
+          callback: function(value, index, values) {
+            return '₹' + value;
+          }
+        }
+      }],
+      xAxes: [{
+        gridLines: {
+          display: false,
+          tickMarkLength: 15,
+        }
+      }]
+    },
+  }
+});
+</script>
+{% endblock %}

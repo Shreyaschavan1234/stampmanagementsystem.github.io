@@ -1,0 +1,30 @@
+{% extends 'layouts/app.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <h4>New face train of your own</h4>
+        <form action="{% url 'su-create-dataset' request.session.account_id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary"><i class="fas fa-camera"></i> New dataset</button>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <h4>Test your face detection</h4>
+        <form action="{% url 'su-train-test' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success"><i class="fas fa-list-alt"></i> Test</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<!-- <script>
+    $(document).ready(function() {
+        $('#table-1-sell').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: '../server_side/scripts/server_processing.php',
+        });
+    });
+</script> -->
+{% endblock %}

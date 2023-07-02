@@ -1,0 +1,59 @@
+{% extends 'layouts/app.html' %}
+{% block content %}
+<!-- <div class="row">
+    <div class="col-md-12">
+        <a href="{% url 'sell-create' %}" class="btn btn-outline-dark"><i class="fa fa-plus"></i> New sell</a>
+    </div>
+</div> -->
+<div class="row mt-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-resposnive">
+                    <table class="table" id="table-1">
+                        <thead>
+                            <tr>
+                                <th>DateTime</th>
+                                <th>Customer</th>
+                                <th>Mobile</th>
+                                <th>Aashaar</th>
+                                <th>Stamp</th>
+                                <th>Code</th>
+                                <th>Location</th>
+                                <!-- <th>File</th> -->
+                                <th>Amount</th>
+                                <th>Pay Mode</th>
+                                <th>Info</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for s in sells %}
+                            <tr>
+                                <td>{{ s.datetime }}</td>
+                                <td>
+                                    {{ s.customer }}
+                                    {% if s.corresponding_person %}
+                                    <br>
+                                    <small style="font-size: 10px;" class="text-muted">{{ s.corresponding_person }}</small>
+                                    {% endif %}
+                                </td>
+                                <td>{{ s.customer.mobile }}</td>
+                                <td>{{ s.customer.aadhaar }}</td>
+                                <td>{{ s.stamp_type }}</td>
+                                <td>{{ s.code_number }}</td>
+                                <td>{{ s.location }}</td>
+                                <td>₹{{ s.total_amount }}</td>
+                                <td>{{ s.paid_with }}</td>
+                                <td>
+                                    <a href="{% url 'sell-info' s.id %}" class="btn btn-sm btn-outline-success">Info</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

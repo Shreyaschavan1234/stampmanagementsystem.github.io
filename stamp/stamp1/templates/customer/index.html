@@ -1,0 +1,59 @@
+{% extends 'layouts/app.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <a href="{% url 'customer-create' %}" class="btn btn-outline-dark"><i class="fa fa-plus"></i> New customer</a>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-resposnive">
+                    <table class="table" id="table-1">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Aadhaar</th>
+                                <th>Mobile</th>
+                                <th>Location</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for c in customers %}
+                            <tr>
+                                <td class="text-center">
+                                    {% if c.image %}
+                                    <img src="{{ c.image.url }}" alt="image" width="50">
+                                    {% else %}
+                                    <i class="fa fa-user-alt"></i>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'customer-edit' c.id %}"><i class="fa fa-edit"></i> {{ c.name }}</a>
+                                </td>
+                                <td>{{ c.aadhaar }}</td>
+                                <td>{{ c.mobile }}</td>
+                                <td>
+                                    {{ c.town }}<br>
+                                    {{ c.tehsil }}<br>
+                                    {{ c.district }}<br>
+                                    {{ c.state }}<br>
+                                    {{ c.pincode }}
+                                </td>
+                                <td>
+                                    <a href="{% url 'customer-camera' c.id %}?return=index" class="btn btn-sm btn-outline-info"><i class="fa fa-image"></i> Image</a>
+                                    <a href="{% url 'sell-customer' c.id %}" class="btn btn-sm btn-outline-success"><i class="fa fa-rupee-sign"></i> Select</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

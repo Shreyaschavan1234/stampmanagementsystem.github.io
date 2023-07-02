@@ -1,0 +1,84 @@
+{% extends 'layouts/app.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2 text-center">
+                        {% if sell.customer.image %}
+                        <img src="{{ sell.customer.image.url }}" alt="image" class="w-100">
+                        {% else %}
+                        <h1 class="mt-3"><i class="fa fa-user-alt"></i></h1>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-10">
+                        <table class="table table-bordered table-responsive-sm">
+                            <tr>
+                                <td><b>Name</b></td>
+                                <td>{{ sell.customer }}</td>
+                                <td><b>Mobile</b></td>
+                                <td>{{ sell.customer.mobile }}</td>
+                                <td><b>Aadhaar</b></td>
+                                <td>{{ sell.customer.aadhaar }}</td>
+                            </tr>
+                        </table>
+                        <table class="table table-bordered table-responsive-sm">
+                            <tr>
+                                <td><b>Date</b></td>
+                                <td>{{ sell.date }}</td>
+                                <td><b>Time</b></td>
+                                <td>{{ sell.time }}</td>
+                                <td><b>Corresponding Person</b></td>
+                                <td>{{ sell.corresponding_person }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-12 mt-1">
+                        <table class="table table-bordered table-responsive-sm">
+                            <tr>
+                                <td><b>Stamp</b></td>
+                                <td>{{ sell.stamp_type }}</td>
+                                <td><b>Code</b></td>
+                                <td>{{ sell.code_number }}</td>
+                                <td><b>Stamp Location</b></td>
+                                <td>{{ sell.location }}</td>
+                            </tr>
+                        </table>
+                        <table class="table table-bordered table-responsive-sm">
+                            <tr>
+                                <td><b>Stamp Amount</b></td>
+                                <td>₹{{ sell.base_amount }}</td>
+                                <td><b>Additional Amount</b></td>
+                                <td>₹{{ sell.additional_amount }}</td>
+                                <td><b>Category</b></td>
+                                <td>{{ sell.category }}</td>
+                            </tr>
+                        </table>
+                        <table class="table table-bordered table-responsive-sm">
+                            <tr>
+                                <td><b>Title</b></td>
+                                <td>{{ sell.title }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Purpose</b></td>
+                                <td>{{ sell.purpose }}</td>
+                            </tr>
+                            <tr>
+                                <td><b>Payment Type</b></td>
+                                <td>
+                                    {{ sell.paid_with }}
+                                    {% if sell.paid_with != 'Cash' %}
+                                    <br>
+                                    <span class="text-muted">Transaction ID: {{ sell.notes }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'layouts/app.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <a href="{% url 'purchase-index' %}" class="btn btn-outline-dark"><i class="fa fa-arrow-left"></i> Back</a>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <form action="{% url 'purchase-next' purchase.id %}" method="post" class="row">
+                    {% csrf_token %}
+                    <div class="form-group mb-2 col-md-2">
+                        <label for="stamp_type">Stamp Type</label>
+                        <select name="stamp_type" id="stamp_type" class="form-control">
+                            <option value="">Select</option>
+                            {% for l in stamp_types %}
+                            <option value="{{ l.id }}">{{ l.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group mb-2 col-md-2">
+                        <label for="code">Code</label>
+                        <input type="text" name="code" id="code" class="form-control" placeholder="Initial code" autocomplete="off">
+                    </div>
+                    <div class="form-group mb-2 col-md-2">
+                        <label for="series_start">Series Start</label>
+                        <input type="number" name="series_start" id="series_start" class="form-control" placeholder="Series start" autocomplete="off">
+                    </div>
+                    <div class="form-group mb-2 col-md-2">
+                        <label for="series_end">Series End</label>
+                        <input type="number" name="series_end" id="series_end" class="form-control" placeholder="Series end" autocomplete="off">
+                    </div>
+                    <div class="form-group mb-2 col-md-2">
+                        <label for="total_qty">Qty</label>
+                        <input type="number" name="total_qty" id="total_qty" class="form-control" placeholder="Qty" autocomplete="off">
+                    </div>
+                    <div class="form-group mb-2 col-md-2">
+                        <label for="purchase_price">Price</label>
+                        <input type="number" name="purchase_price" id="purchase_price" class="form-control" placeholder="Per Stamp" autocomplete="off">
+                    </div>
+                    <div class="form-group mb-2 col-md-2">
+                        <label for="total_amount">Total</label>
+                        <input type="number" name="total_amount" id="total_amount" class="form-control" placeholder="Amount" autocomplete="off">
+                    </div>
+                    <div class="form-group mb-2 col-md-3">
+                        <label for="">&nbsp;</label><br>
+                        <button type="submit" class="btn btn-info"><i class="fa fa-plus"></i> Add to list</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Stamp</th>
+                                <th>Code</th>
+                                <th>Series</th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in purchase_list %}
+                            <tr>
+                                <td>{{ p.stamp_type.name }}</td>
+                                <td>{{ p.initial_code }}</td>
+                                <td>{{ p.series_start }} - {{ p.series_end }}</td>
+                                <td>{{ p.quantity }}</td>
+                                <td>₹{{ p.purchase_price }}</td>
+                                <td>₹{{ p.amount }}</td>
+                                <td>
+                                    <a href="#" class="text-danger"><i class="fa fa-trash"></i> Delete</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

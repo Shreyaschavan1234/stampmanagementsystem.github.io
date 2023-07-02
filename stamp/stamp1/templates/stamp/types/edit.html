@@ -1,0 +1,39 @@
+{% extends 'layouts/app.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <a href="{% url 'stamp-types' %}" class="btn btn-outline-dark"><i class="fa fa-arrow-left"></i> Back</a>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h4>New type</h4>
+                <form action="{% url 'stamp-types-edit' stamp_type.id %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group mb-2">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Name of the type" autocomplete="off" value="{{ stamp_type.name }}">
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="number">Number</label>
+                        <input type="number" name="number" id="number" class="form-control" placeholder="Number of the type" autocomplete="off" value="{{ stamp_type.number }}">
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="price">Price</label>
+                        <input type="number" name="price" id="price" class="form-control" placeholder="Price of the type" autocomplete="off" value="{{ stamp_type.base_price }}">
+                    </div>
+                    <div class="form-group mb-2">
+                        <label for="image">Image</label>
+                        <input type="file" name="image" id="image" class="form-control" placeholder="Number of the type" autocomplete="off">
+                    </div>
+                    <div class="form-group mb-2">
+                        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

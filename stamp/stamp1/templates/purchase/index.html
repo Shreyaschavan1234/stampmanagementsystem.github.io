@@ -1,0 +1,50 @@
+{% extends 'layouts/app.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <a href="{% url 'purchase-create' %}" class="btn btn-outline-dark"><i class="fa fa-plus"></i> New purchase</a>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-resposnive">
+                    <table class="table" id="table-1">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Location</th>
+                                <th>Stamp</th>
+                                <th>Code</th>
+                                <th>Series Start</th>
+                                <th>Series End</th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                                <th>Total Amount</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for l in purchases %}
+                            <tr>
+                                <td>{{ l.id }}</td>
+                                <td>{{ l.location.name }}</td>
+                                <td>{{ l.stamp_type.name }}</td>
+                                <td>{{ l.code }}</td>
+                                <td>{{ l.series_start }}</td>
+                                <td>{{ l.series_end }}</td>
+                                <td>{{ l.quantity }}</td>
+                                <td>₹{{ l.amount }}</td>
+                                <td>₹{{ l.total }}</td>
+                                <td>{{ l.date }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

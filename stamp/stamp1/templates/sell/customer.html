@@ -1,0 +1,142 @@
+{% extends 'layouts/app.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <a href="{% url 'sell-create' %}" class="btn btn-outline-dark"><i class="fa fa-arrow-left"></i> Back</a>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <form action="{% url 'sell-customer' customer.id %}" method="post" class="row" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group mb-2 col-md-2">
+                        <label for="stamp_type">Stamp</label>
+                        <select name="stamp_type" id="stamp_type" class="form-control" required>
+                            <option value="">Select</option>
+                            {% for l in stamp_types %}
+                            <option value="{{ l.id }}">{{ l.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group mb-2 col-md-2">
+                        <input type="hidden" name="hd_stamp_id" id="hd_stamp_id" required>
+                        <label for="code">Code</label>
+                        <input type="text" class="form-control" id="code" name="code" disabled required placeholder="Code">
+                    </div>
+                    <div class="form-group mb-2 col-md-2">
+                        <label for="location">Location</label>
+                        <select class="form-control" id="location" name="location" disabled required>
+                            <option value="">Location</option>
+                            {% for l in locations %}
+                            <option value="{{ l.id }}">{{ l.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group mb-2 col-md-2">
+                        <label for="base_amount">Base Amount</label>
+                        <input type="number" class="form-control" id="base_amount" name="base_amount" disabled required placeholder="Base Amount">
+                    </div>
+                    <div class="form-group mb-2 col-md-2">
+                        <label for="category">Category</label>
+                        <select name="category" id="category" class="form-control" required>
+                            <option value="">Select</option>
+                            {% for l in categories %}
+                            <option value="{{ l.id }}">{{ l.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group mb-2 col-md-2">
+                        <label for="additional_amount">Additional Amount</label>
+                        <input type="number" class="form-control" id="additional_amount" name="additional_amount" required placeholder="Amount">
+                    </div>
+                    <div class="form-group mb-2 col-md-4">
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control" id="title" name="title" required placeholder="Title">
+                    </div>
+                    <div class="form-group mb-2 col-md-8">
+                        <label for="purpose">Purpose</label>
+                        <input type="text" class="form-control" id="purpose" name="purpose" required placeholder="Purpose">
+                    </div>
+                    <div class="form-group mb-2 col-md-4">
+                        <label for="corresponding_person">Corresponding Person</label>
+                        <input type="text" class="form-control" id="corresponding_person" name="corresponding_person" placeholder="If any (Optional)">
+                    </div>
+                    <div class="form-group mb-2 col-md-2">
+                        <label for="payment_mode">Payment Mode</label>
+                        <select name="payment_mode" id="payment_mode" onchange="check_mode()" class="form-control" required>
+                            <option value="">Select</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Gpay">Gpay</option>
+                            <option value="Phonepe">Phonepe</option>
+                            <option value="Paytm">Paytm</option>
+                            <option value="Bharatpe">Bharatpe</option>
+                            <option value="Other UPI">Other UPI</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-2 col-md-6">
+                        <label for="notes">Transaction ID</label>
+                        <input type="text" class="form-control" id="notes" name="notes" placeholder="Optional">
+                    </div>
+                    <div class="form-group mb-2 col-md-12">
+                        <button class="btn btn-success" type="submit"><i class="fa fa-save"></i> Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+    $(document).ready(function(){
+        $("#stamp_type").change(function () {
+            $.ajax({
+            url: "{% url 'get-stamp-details' %}",
+            data: {
+                'stamp_type_id': $(this).val()
+            },
+            dataType: 'json',
+                success: function (data) {
+                    if (data) {
+                        // $("#code").val(value.fields.code_number);
+                        // var fillList = '<option value=\"\">Select District</option>';
+                        $.each(data, function(key, value){
+                            console.log(value);
+                            $("#code").val(value.fields.code_number);
+                            $("#base_amount").val(value.fields.base_amount);
+                            $("#hd_stamp_id").val(value.pk);
+                            $("#location").val(value.fields.location);
+                            // fillList += '<option value=' + value.pk + '>' + value.fields.name + '</option>';
+                        });
+                    }
+                },
+                error: function(jqXHR, exception) {
+                    $("#code").val('');
+                    $("#hd_stamp_id").val('');
+                    $("#base_amount").val('');
+                    $("#location").val('');
+                    alert("No data found");
+                }
+            });
+        });
+    });
+</script>
+<script>
+    var pay_type = document.getElementById("payment_mode");
+    var notes = document.getElementById("notes");
+
+    function check_mode() {
+        if (pay_type.value == "Cash") {
+            notes.setAttribute('readonly', 'readonly');
+            notes.value = "None";
+        }
+        else{
+            notes.value = "";
+            notes.removeAttribute("readonly");
+        }
+    }
+</script>
+{% endblock %}

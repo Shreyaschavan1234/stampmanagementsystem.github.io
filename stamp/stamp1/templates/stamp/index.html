@@ -1,0 +1,44 @@
+{% extends 'layouts/app.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <a href="{% url 'stamp-types' %}" class="btn btn-outline-dark"><i class="fa fa-arrow-left"></i> Back</a>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-resposnive">
+                    <table class="table" id="table-1-sell">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Location</th>
+                                <th>Stamp</th>
+                                <th>Code</th>
+                                <th>Price</th>
+                                <th>Sold</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+    $(document).ready(function() {
+        $('#table-1-sell').DataTable({
+            processing: true,
+            serverSide: true,
+            sAjaxSource: "{% url 'ajax-stamp-data' %}",
+        });
+    });
+</script>
+{% endblock %}
